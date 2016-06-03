@@ -1,3 +1,10 @@
+Standalone GPS log converter for the Maemo GPS Recorder.
+
+This version of the program runs on a regular Qt 4.6 system, and creates GPX files with a bit more information than the standard version of this program: the horizontal/vertical uncertainty in cm are saved in "extensions".
+
+To install, open the .pro file in Qt Creator.
+To run, use ./gpsrecorder gpsr_file1 gpsr_fie
+
 GPS Recorder for Maemo
 
 A GPS data logger for the Maemo platform (Nokia N900).
