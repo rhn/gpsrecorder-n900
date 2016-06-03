@@ -183,13 +183,22 @@ void ExporterSinkGpx::onSOF (const char* pszFilePath, time_t uiTime, qint32 iTim
   fprintf(m_pFile,
     "<?xml version=\"1.0\" ?>" GPX_NL
     "<gpx version=\"1.1\" creator=\"%s v%s\" xmlns=\"http://www.topografix.com/GPX/1/1\">" GPX_NL
+    #ifdef GUI
     "<metadata>" GPX_NL
     " <time>%s</time>" GPX_NL
     "</metadata>" GPX_NL
+    #endif
     "<trk>" GPX_NL
-    "<trkseg>" GPX_NL,
-    qPrintable(App::applicationLabel()), qPrintable(QCoreApplication::applicationVersion()),
-    Util::timeStringIso8601(true, uiTime).constData() );
+    "<trkseg>" GPX_NL
+    " <src>Nokia N900</src>" GPX_NL
+    #ifdef GUI
+    ,qPrintable(App::applicationLabel())
+    #endif
+    ,qPrintable(QCoreApplication::applicationVersion())
+    #ifdef GUI
+    ,Util::timeStringIso8601(true, uiTime).constData()
+    #endif
+    );
 }
 
 //---------------------------------------------------------------------------
@@ -200,6 +209,7 @@ void ExporterSinkGpx::onLocationFix (time_t uiTime, const LocationFixContainer& 
   QByteArray strFixMode;
   QByteArray strTime;
   QByteArray strEle;
+  QByteArray strExtensions;
 
   Q_ASSERT(fixCont.hasFix());
   if (!m_pFile || !fixCont.hasFix())
@@ -209,6 +219,10 @@ void ExporterSinkGpx::onLocationFix (time_t uiTime, const LocationFixContainer& 
 
   if (!fix.hasFields(FIXFIELD_LATLONG))
     return;
+
+  strExtensions += "  <hdopCM>";
+  strExtensions += QByteArray::number(fix.uiHorizEP);
+  strExtensions += "</hdopCM>" GPX_NL;
 
   switch (fix.cFixMode)
   {
@@ -241,8 +255,10 @@ void ExporterSinkGpx::onLocationFix (time_t uiTime, const LocationFixContainer& 
     strEle.clear();
     strEle += " <ele>";
     strEle += QByteArray::number(fix.iAlt);
-    strEle += "</ele>";
-    strEle += GPX_NL;
+    strEle += "</ele>" GPX_NL;
+    strExtensions += "  <vdopCM>";
+    strExtensions += QByteArray::number(fix.uiAltEP);
+    strExtensions += "</vdopCM>" GPX_NL;
   }
 
   fprintf(m_pFile,
@@ -251,12 +267,16 @@ void ExporterSinkGpx::onLocationFix (time_t uiTime, const LocationFixContainer& 
     "%s"
     "%s"
     " <sat>%i</sat>" GPX_NL
+    " <extensions>" GPX_NL
+    "%s"
+    " </extensions>" GPX_NL
     "</trkpt>" GPX_NL,
     fix.getLatDeg(), fix.getLongDeg(),
     strTime.constData(),
     strFixMode.constData(),
     strEle.constData(),
-    (int)fix.cSatUse );
+    (int)fix.cSatUse,
+    strExtensions.constData());
 }
 
 //---------------------------------------------------------------------------

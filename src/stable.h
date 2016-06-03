@@ -46,61 +46,6 @@
 #include <time.h>
 #include <unistd.h>
 
-// maemo - glib
-//
-// get glib include paths :
-// * mad pkg-config --cflags glib-2.0
-// * mad pkg-config --libs glib-2.0
-//
-// INCLUDEPATH += /usr/include/glib-2.0 /usr/lib/glib-2.0/include
-// LIBS        += -lglib-2.0 -llocation
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <glib.h>
-#ifdef __cplusplus
-}
-#endif
-
-// maemo - location
-//
-// http://wiki.maemo.org/Documentation/Maemo_5_Developer_Guide/Using_Connectivity_Components/Using_Location_API
-// http://maemo.org/api_refs/5.0/5.0-final/liblocation/LocationGPSDControl.html
-// http://maemo.org/api_refs/5.0/5.0-final/liblocation/LocationGPSDevice.html
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <location/location-gps-device.h>
-#include <location/location-gpsd-control.h>
-#include <location/location-distance-utils.h>
-#include <location/location-misc.h>
-#ifdef __cplusplus
-}
-#endif
-
-// maemo - clockd
-//
-// http://maemo.org/api_refs/5.0/5.0-final/libtime/libtime_8h.html
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <clockd/libtime.h>
-#ifdef __cplusplus
-}
-#endif
-
-// maemo - mce (Mode Control Entity)
-//
-// http://maemo.org/api_refs/5.0/beta/mce-dev/index.html
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <mce/dbus-names.h>
-#include <mce/mode-names.h>
-#ifdef __cplusplus
-}
-#endif
-
 // minizip
 #ifdef __cplusplus
 extern "C" {
@@ -116,11 +61,6 @@ extern "C" {
 #include <QSettings>
 #include <QtGui>
 #include <QtDBus>
-#endif
-
-// qt - maemo specific (qt4.6+)
-#ifdef __cplusplus
-#include <QtMaemo5>
 #endif
 
 
@@ -175,14 +115,14 @@ class ExporterSink;
 
 #include "QMaemoBattery.h"
 #include "QLabeledLineEdit.h"
-#include "QMaemoComboBox.h"
+//#include "QMaemoComboBox.h"
 #include "QMaemoGroupBox.h"
-#include "QMeansOfTransport.h"
+//#include "QMeansOfTransport.h"
 
 #include "Util.h"
 #include "LocationFix.h"
 #include "Location.h"
-#include "LocationMaemo.h"
+//#include "LocationMaemo.h"
 #include "GPSRFile.h"
 //#include "LocationGPSRFile.h"
 #include "Exporter.h"
@@ -195,13 +135,13 @@ class ExporterSink;
 #include "WndBase.h"
 #include "WndAbout.h"
 #include "WndCell.h"
-#include "WndConfig.h"
-#include "WndConvert.h"
+//#include "WndConfig.h"
+//#include "WndConvert.h"
 #include "WndSat.h"
 #include "WndSpeed.h"
-#include "WndStart.h"
+//#include "WndStart.h"
 #include "WndMain.h"
-#include "WndMeansOfTransport.h"
+//#include "WndMeansOfTransport.h"
 
 #include "AppSettings.h"
 #include "App.h"

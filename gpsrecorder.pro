@@ -29,23 +29,20 @@ TEMPLATE = app
 
 CONFIG += warn_off precompile_header release
 #CONFIG += silent
-#CONFIG += debug
+CONFIG += debug
 CONFIG(debug, debug|release) {
   #TARGET = $$join(TARGET,,,-debug)
   message(This is a DEBUG build !)
 }
 
 QT  = core gui dbus
-QT += maemo5
 
 INCLUDEPATH += /usr/include/glib-2.0 /usr/lib/glib-2.0/include
-LIBS        += -lrt -lz -lglib-2.0 -llocation -ltime
+LIBS        += -lrt -lz -lglib-2.0
 DEFINES     +=
 
-QMAKE_CFLAGS   +=
+QMAKE_CFLAGS   += -g
 QMAKE_CXXFLAGS += -fno-strict-aliasing -Wall -Werror
-
-QMAKE_POST_LINK = strip --strip-all $(TARGET)
 
 PRECOMPILED_HEADER = src/stable.h
 
@@ -53,8 +50,8 @@ HEADERS += \
   src/minizip/crypt.h \
   src/minizip/ioapi.h \
   src/minizip/zip.h \
-  src/App.h \
-  src/AppSettings.h \
+#  src/App.h \
+#  src/AppSettings.h \
   src/Exporter.h \
   src/ExporterSink.h \
   src/ExporterSinkCsv.h \
@@ -62,58 +59,59 @@ HEADERS += \
   src/ExporterSinkKml.h \
   src/ExporterSinkTxt.h \
   src/GPSRFile.h \
-  src/Location.h \
+#  src/Location.h \
   src/LocationFix.h \
   src/LocationMaemo.h \
-  src/QLabeledLineEdit.h \
-  src/QMaemoBattery.h \
-  src/QMaemoComboBox.h \
+  #src/QLabeledLineEdit.h \
+  #src/QMaemoBattery.h \
+  #src/QMaemoComboBox.h \
   src/QMaemoGroupBox.h \
-  src/QMeansOfTransport.h \
+  #src/QMeansOfTransport.h \
   src/Util.h \
-  src/WndAbout.h \
-  src/WndBase.h \
-  src/WndCell.h \
-  src/WndConfig.h \
-  src/WndConvert.h \
-  src/WndMain.h \
-  src/WndMeansOfTransport.h \
-  src/WndSat.h \
-  src/WndSpeed.h \
-  src/WndStart.h
+  #src/WndAbout.h \
+  #src/WndBase.h \
+  #src/WndCell.h \
+  #src/WndConfig.h \
+  #src/WndConvert.h \
+  #src/WndMain.h \
+  #src/WndMeansOfTransport.h \
+  #src/WndSat.h \
+  #src/WndSpeed.h \
+    src/consoletask.h
+  #src/WndStart.h
 
 SOURCES += \
   src/minizip/ioapi.c \
   src/minizip/zip.c \
-  src/main.cpp \
-  src/App.cpp \
-  src/AppSettings.cpp \
+  src/converter.cpp \
+#  src/AppSettings.cpp \
   src/Exporter.cpp \
   src/ExporterSink.cpp \
-  src/ExporterSinkCsv.cpp \
+#  src/ExporterSinkCsv.cpp \
   src/ExporterSinkGpx.cpp \
-  src/ExporterSinkKml.cpp \
-  src/ExporterSinkTxt.cpp \
+#  src/ExporterSinkKml.cpp \
+#  src/ExporterSinkTxt.cpp \
   src/GPSRFile.cpp \
-  src/Location.cpp \
+#  src/Location.cpp \
   src/LocationFix.cpp \
-  src/LocationMaemo.cpp \
-  src/QLabeledLineEdit.cpp \
-  src/QMaemoBattery.cpp \
-  src/QMaemoComboBox.cpp \
-  src/QMaemoGroupBox.cpp \
-  src/QMeansOfTransport.cpp \
+#  src/LocationMaemo.cpp \
+#  src/QLabeledLineEdit.cpp \
+#  src/QMaemoBattery.cpp \
+#  src/QMaemoComboBox.cpp \
+#  src/QMaemoGroupBox.cpp \
+#  src/QMeansOfTransport.cpp \
   src/Util.cpp \
-  src/WndAbout.cpp \
-  src/WndBase.cpp \
-  src/WndCell.cpp \
-  src/WndConfig.cpp \
-  src/WndConvert.cpp \
-  src/WndMain.cpp \
-  src/WndMeansOfTransport.cpp \
-  src/WndSat.cpp \
-  src/WndSpeed.cpp \
-  src/WndStart.cpp
+#  src/WndAbout.cpp \
+#  src/WndBase.cpp \
+#  src/WndCell.cpp \
+#  src/WndConfig.cpp \
+#  src/WndConvert.cpp \
+#  src/WndMain.cpp \
+#  src/WndMeansOfTransport.cpp \
+#  src/WndSat.cpp \
+#  src/WndSpeed.cpp \
+#  src/WndStart.cpp
+    src/consoletask.cpp
 
 RESOURCES += src/resources.qrc
 
@@ -123,14 +121,6 @@ DESTDIR     = build
 OBJECTS_DIR = $$DESTDIR
 MOC_DIR     = $$DESTDIR
 UI_DIR      = $$DESTDIR
-
-
-# create version.h
-build-version.commands  = scripts/version.sh create-header
-build-version.depends   = FORCE
-QMAKE_EXTRA_TARGETS    += build-version
-PRE_TARGETDEPS          = build-version
-
 
 # define install paths
 isEmpty(PREFIX) {

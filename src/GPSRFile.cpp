@@ -211,6 +211,7 @@ void GPSRFile::close (void)
   m_vecReadChunks.clear();
 }
 
+#ifdef MAEMO
 //---------------------------------------------------------------------------
 // openNew
 //---------------------------------------------------------------------------
@@ -368,7 +369,7 @@ bool GPSRFile::openAppend (const char* pszFile, const char* pszTrackName)
 
   return true;
 }
-
+#endif
 //---------------------------------------------------------------------------
 // openRead
 //---------------------------------------------------------------------------
@@ -509,6 +510,7 @@ void GPSRFile::writeResumed (time_t uiTime)
   this->writeChunkSimple(CHUNK_RESUMED, uiTime);
 }
 
+#ifdef MAEMO
 //---------------------------------------------------------------------------
 // writeNewTrack
 //---------------------------------------------------------------------------
@@ -553,7 +555,7 @@ void GPSRFile::writeNewTrack (time_t uiTime, const char* pszName)
 
   this->writeData((char*)pChunk, uiChunkSize);
 }
-
+#endif
 //---------------------------------------------------------------------------
 // writeMeansOfTransport
 //---------------------------------------------------------------------------
@@ -1308,7 +1310,7 @@ bool GPSRFile::dump (const char* pszFile, QString& strDump, bool bIncludeLocatio
     }
     else if (cri.uiId == CHUNK_NEWTRACK)
     {
-      int   iOffset = qint32((qint32*)&pChunk->aData[0]);
+      int   iOffset = *((qint32*)&pChunk->aData[0]);
       char* pszName = (char*)&pChunk->aData[sizeof(qint32)];
 
       strDump += QString(

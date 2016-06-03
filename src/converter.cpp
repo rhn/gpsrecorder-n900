@@ -21,51 +21,58 @@
 //    be misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 //
-// Created: 2010-04-03 11:51:19
+// Created: 2010-03-09 18:29:46
 //
 //***************************************************************************
 
 #include "stable.h"
+#include "version.h"
+#include "consoletask.h"
+#include <QDebug>
+
+//---------------------------------------------------------------------------
+// Local Variables
+//---------------------------------------------------------------------------
+static FILE*      hLogFile = 0;
+static QByteArray strLogStart;
 
 
 //---------------------------------------------------------------------------
-// ExporterSink
+// m a i n
 //---------------------------------------------------------------------------
-ExporterSink::ExporterSink (Exporter* pParent)
-: QObject(pParent)
+int main (int nArgc, char** ppszArgv)
 {
-  Q_ASSERT(pParent);
+  int nRes;
 
-  m_pFile = 0;
-#ifdef MAEMO
-  // read settings
+  QCoreApplication::setOrganizationName("jcl");
+  //QCoreApplication::setOrganizationDomain("example.com");
+  QCoreApplication::setApplicationName("gpsrecorder");
+  QCoreApplication::setApplicationVersion(APP_VERSION_STR);
+
+  qDebug("%s version %s compiled on " __DATE__ " at " __TIME__ ".\n",
+    qPrintable(QCoreApplication::applicationName()),
+    qPrintable(QCoreApplication::applicationVersion()));
+
+  fflush(NULL);
+
+  strLogStart = Util::timeString();
+
+  // run
   {
-    AppSettings& settings = *App::instance()->settings();
-
-    m_bExportPause = settings.getConvertExportPauses();
-  }
-#endif
-}
-
-//---------------------------------------------------------------------------
-// ~ExporterSink
-//---------------------------------------------------------------------------
-ExporterSink::~ExporterSink (void)
-{
-}
-
-
-
-//---------------------------------------------------------------------------
-// close
-//---------------------------------------------------------------------------
-void ExporterSink::close (void)
-{
-  if (m_pFile)
-  {
-    fclose(m_pFile);
-    m_pFile = 0;
+    QCoreApplication app(nArgc, ppszArgv, 0);
+    ConsoleTask task;
+    QTimer::singleShot(0, &task, SLOT(run()));
+    nRes = app.exec();
   }
 
-  m_strFilePath.clear();
+  // close log file
+  // at this point, App instance must be destroyed !
+  qInstallMsgHandler(0);
+  if (hLogFile)
+  {
+    fputs("\n", hLogFile);
+    fclose(hLogFile);
+  }
+
+  return nRes;
 }

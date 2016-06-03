@@ -202,6 +202,7 @@ time_t Util::timeApplyOffset (int iSecondsOffset, time_t uiTime/*=0*/, int* piAp
   return uiTime;
 }
 
+#ifdef MAEMO
 //---------------------------------------------------------------------------
 // timeSetup
 //---------------------------------------------------------------------------
@@ -230,7 +231,7 @@ int Util::timeZoneOffset (void)
 {
   return -time_get_utc_offset(0); // nokia's libtime
 }
-
+#endif
 //---------------------------------------------------------------------------
 // timeZoneOffsetHuman
 //---------------------------------------------------------------------------
